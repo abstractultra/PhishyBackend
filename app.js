@@ -22,9 +22,15 @@ function scrapeFirstParagraph(body) {
   return firstParagraph;
 }
 
+function scrapeAllText(body) {
+  const $ = cheerio.load(body);
+  const text = $("body").text();
+  return text;
+}
+
 async function getUrlParagraph(url) {
   const body = await getUrlContents(url);
-  const paragraph = scrapeFirstParagraph(body);
+  const paragraph = scrapeAllText(body);
   return paragraph;
 }
 
