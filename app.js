@@ -7,6 +7,8 @@ app.get('/', (req, res) => {
     res.end("Phishy Server.");
 });
 
+app.use(express.json());
+
 app.post('/process-url', (req, res) => {
     fetch(req.body.url)
         .then(res => res.text())
