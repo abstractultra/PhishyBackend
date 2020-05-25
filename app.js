@@ -17,7 +17,7 @@ async function getUrlContents(url) {
 }
 
 function scrapeFirstParagraph(body) {
-  const $ = heerio.load(body);
+  const $ = cheerio.load(body);
   const firstParagraph = $("p").eq(0).text();
   return firstParagraph;
 }
