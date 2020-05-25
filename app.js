@@ -1,18 +1,39 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const port = process.env.PORT || 4001;
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
+const cheerio = require("cheerio");
 
-app.get('/', (req, res) => {
-    res.end("Phishy Server.");
+app.get("/", (req, res) => {
+  res.end("Phishy Server.");
 });
 
 app.use(express.json());
 
-app.post('/process-url', (req, res) => {
-    fetch(req.body.url)
-        .then(res => res.text())
-        .then(body => res.json({data: body}));
+async function getUrlContents(url) {
+  const res = await fetch(url);
+  const body = await res.text();
+  return body;
+}
+
+function scrapeFirstParagraph(body) {
+  const $ = heerio.load(body);
+  const firstParagraph = $("p").eq(0).text();
+  return firstParagraph;
+}
+
+async function getUrlParagraph(url) {
+  const body = await getUrlContents(url);
+  const paragraph = scrapeFirstParagraph(body);
+  return paragraph;
+}
+
+app.post("/process-url", (req, res) => {
+  getUrlContents(req.body.url).then((body) => res.json({ data: body }));
 });
 
-app.listen(port, () => console.log(`Listening on port: ${port}`))
+app.post("/scrape-url", (req, res) => {
+  getUrlParagraph(req.body.url).then((paragraph) => res.json({ data: paragraph }));
+});
+
+app.listen(port, () => console.log(`Listening on port: ${port}`));
