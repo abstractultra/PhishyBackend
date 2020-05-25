@@ -12,7 +12,7 @@ app.use(express.json());
 app.post('/process-url', (req, res) => {
     fetch(req.body.url)
         .then(res => res.text())
-        .then(body => console.log(body));
+        .then(body => res.end(body));
 });
 
 app.listen(port, () => console.log(`Listening on port: ${port}`))
